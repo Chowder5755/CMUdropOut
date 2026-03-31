@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CMU Dropout (Suicide) Counter</title>
+<title>CMU Dropout Counter</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Impact&family=Comic+Neue:wght@700&display=swap');
 
@@ -209,6 +209,64 @@
     margin-top: 4px;
   }
 
+  .vote-btn {
+    margin-top: 18px;
+    background: linear-gradient(135deg, #ff0000, #cc0000);
+    color: white;
+    font-family: Impact, sans-serif;
+    font-size: clamp(16px, 2.5vw, 22px);
+    letter-spacing: 2px;
+    border: 4px solid #000;
+    border-radius: 12px;
+    padding: 14px 32px;
+    cursor: pointer;
+    box-shadow: 5px 5px 0 #000;
+    transition: transform 0.1s, box-shadow 0.1s;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-transform: uppercase;
+  }
+  .vote-btn:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 #000; }
+  .vote-btn:active { transform: translate(3px,3px); box-shadow: 2px 2px 0 #000; }
+  .vote-btn.voted {
+    background: linear-gradient(135deg, #555, #333);
+    animation: none;
+    cursor: default;
+  }
+
+  .vote-count {
+    margin-top: 10px;
+    font-family: Impact, sans-serif;
+    font-size: 16px;
+    color: #1a1a2e;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.4);
+  }
+
+  .vote-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    background: white;
+    border: 5px solid #000;
+    border-radius: 16px;
+    padding: 24px 40px;
+    font-family: Impact, sans-serif;
+    font-size: clamp(18px, 3vw, 28px);
+    text-align: center;
+    box-shadow: 8px 8px 0 #000;
+    z-index: 9999;
+    animation: popIn 0.3s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+    pointer-events: none;
+  }
+
+  @keyframes popIn {
+    0%   { opacity: 0; transform: translate(-50%, -60%) scale(0.5); }
+    70%  { transform: translate(-50%, -60%) scale(1.1); }
+    100% { opacity: 1; transform: translate(-50%, -60%) scale(1); }
+  }
+
   /* confetti burst */
   .confetti {
     position: fixed;
@@ -230,14 +288,17 @@
 <div class="stars" id="stars"></div>
 
 <div class="hero">
-  <div class="title">🚨 CMU Dropout (Suicide) Counter 🚨</div>
+  <div class="title">🚨 CMU SUICIDE TRACKER 🚨</div>
   <div class="subtitle">Live™ · Definitely Real™ · Sponsored by Tears™</div>
 
   <div class="counter-box">
     <div class="count-label">📉 Current CMU Student Drop Out Count 📉</div>
     <span class="count-number" id="counter">0</span>
-    <div class="tick-info">Est. since the dawn of GPA destruction</div>
+    <div class="tick-info">+1 every 8 hours · Est. since the dawn of GPA destruction</div>
     <div class="next-tick" id="next-tick">Next dropout in: calculating...</div>
+
+    <button class="vote-btn" id="voteBtn" onclick="castVote()">☠️ VOTE FOR NEXT DROPOUT ☠️</button>
+    <div class="vote-count">🗳️ <span id="voteCount">0</span> students nominated for departure</div>
   </div>
 </div>
 
@@ -247,7 +308,7 @@
 <!-- Floating ticker -->
 <div class="ticker">
   <span class="ticker-inner">
-    💀 DROPOUT DETECTED &nbsp;|&nbsp; GPA = NULL &nbsp;|&nbsp; mom.exe has stopped working &nbsp;|&nbsp;
+    💀 DROPOUT DETECTED &nbsp;|&nbsp; GPA = 2.0 &nbsp;|&nbsp; mom.exe has stopped working &nbsp;|&nbsp;
     "i'll just take a gap year" 🗿 &nbsp;|&nbsp; sleep.exe crashed &nbsp;|&nbsp; ANOTHER ONE 😔 &nbsp;|&nbsp;
     rip bozo &nbsp;|&nbsp; cmu ate well today &nbsp;|&nbsp; 15-122 said goodbye &nbsp;|&nbsp;
     the curve did NOT help &nbsp;|&nbsp; 💀💀💀
@@ -291,7 +352,7 @@
     const m = Math.floor((diff % 3600000) / 60000);
     const s = Math.floor((diff % 60000) / 1000);
     document.getElementById('next-tick').textContent =
-      `☠️ Next dropout in: ${h}h ${m}m ${s}s`;
+      `Next ☠️ in: ${h}h ${m}m ${s}s`;
   }
 
   updateCounter();
@@ -308,6 +369,48 @@
       setTimeout(() => c.remove(), 2000);
     }
   }
+
+  // ---- Vote Button ----
+  let votes = parseInt(localStorage.getItem('cmu_votes') || '0');
+  let hasVoted = localStorage.getItem('cmu_has_voted') === 'true';
+
+  function updateVoteUI() {
+    document.getElementById('voteCount').textContent = votes.toLocaleString();
+    const btn = document.getElementById('voteBtn');
+    if (hasVoted) {
+      btn.textContent = '✅ YOU VOTED — TRAITOR';
+      btn.classList.add('voted');
+      btn.disabled = true;
+    }
+  }
+
+  const voteMessages = [
+    '🗳️ VOTE CAST! Someone\'s getting yeeted!',
+    '☠️ ANOTHER SOUL NOMINATED!',
+    '📉 GPA couldn\'t save them!',
+    '🚪 One step closer to the door!',
+    '💀 Democracy has spoken!',
+    '🤡 The people have voted!',
+    '😔 Thoughts and prayers...',
+  ];
+
+  function castVote() {
+    if (hasVoted) return;
+    votes++;
+    hasVoted = true;
+    localStorage.setItem('cmu_votes', votes);
+    localStorage.setItem('cmu_has_voted', 'true');
+    updateVoteUI();
+    spawnConfetti();
+
+    const popup = document.createElement('div');
+    popup.className = 'vote-popup';
+    popup.textContent = voteMessages[Math.floor(Math.random() * voteMessages.length)];
+    document.body.appendChild(popup);
+    setTimeout(() => popup.remove(), 2000);
+  }
+
+  updateVoteUI();
 
   // ---- Memes ----
   const memes = [
