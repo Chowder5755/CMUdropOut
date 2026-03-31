@@ -288,7 +288,7 @@
 <div class="stars" id="stars"></div>
 
 <div class="hero">
-  <div class="title">🚨 CMU SUICIDE TRACKER 🚨</div>
+  <div class="title">🚨 CMU DROPOUT TRACKER 🚨</div>
   <div class="subtitle">Live™ · Definitely Real™ · Sponsored by Tears™</div>
 
   <div class="counter-box">
@@ -308,7 +308,7 @@
 <!-- Floating ticker -->
 <div class="ticker">
   <span class="ticker-inner">
-    💀 DROPOUT DETECTED &nbsp;|&nbsp; GPA = 2.0 &nbsp;|&nbsp; mom.exe has stopped working &nbsp;|&nbsp;
+    💀 DROPOUT DETECTED &nbsp;|&nbsp; GPA = NULL &nbsp;|&nbsp; mom.exe has stopped working &nbsp;|&nbsp;
     "i'll just take a gap year" 🗿 &nbsp;|&nbsp; sleep.exe crashed &nbsp;|&nbsp; ANOTHER ONE 😔 &nbsp;|&nbsp;
     rip bozo &nbsp;|&nbsp; cmu ate well today &nbsp;|&nbsp; 15-122 said goodbye &nbsp;|&nbsp;
     the curve did NOT help &nbsp;|&nbsp; 💀💀💀
@@ -352,7 +352,7 @@
     const m = Math.floor((diff % 3600000) / 60000);
     const s = Math.floor((diff % 60000) / 1000);
     document.getElementById('next-tick').textContent =
-      `Next ☠️ in: ${h}h ${m}m ${s}s`;
+      `☠️ Next dropout in: ${h}h ${m}m ${s}s`;
   }
 
   updateCounter();
@@ -370,9 +370,31 @@
     }
   }
 
-  // ---- Vote Button ----
-  let votes = parseInt(localStorage.getItem('cmu_votes') || '0');
+  // ---- Vote Button (JSONBin) ----
+  const BIN_ID = '69cc1c47aaba882197b0b9f0';
+  const API_KEY = '$2a$10$wEQXXYdLol9Gjnpr1V2STeE8GbluGFpvkpNgF1wuAlY0mJjU2dk56';
+  const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+  const HEADERS = { 'X-Master-Key': API_KEY, 'Content-Type': 'application/json' };
+
+  let votes = 0;
   let hasVoted = localStorage.getItem('cmu_has_voted') === 'true';
+
+  async function fetchVotes() {
+    try {
+      const res = await fetch(BIN_URL + '/latest', { headers: HEADERS });
+      const data = await res.json();
+      votes = data.record.votes || 0;
+      updateVoteUI();
+    } catch(e) { console.error('Failed to fetch votes', e); }
+  }
+
+  async function saveVotes(newCount) {
+    await fetch(BIN_URL, {
+      method: 'PUT',
+      headers: HEADERS,
+      body: JSON.stringify({ votes: newCount })
+    });
+  }
 
   function updateVoteUI() {
     document.getElementById('voteCount').textContent = votes.toLocaleString();
@@ -394,14 +416,14 @@
     '😔 Thoughts and prayers...',
   ];
 
-  function castVote() {
+  async function castVote() {
     if (hasVoted) return;
     votes++;
     hasVoted = true;
-    localStorage.setItem('cmu_votes', votes);
     localStorage.setItem('cmu_has_voted', 'true');
     updateVoteUI();
     spawnConfetti();
+    await saveVotes(votes);
 
     const popup = document.createElement('div');
     popup.className = 'vote-popup';
@@ -410,7 +432,7 @@
     setTimeout(() => popup.remove(), 2000);
   }
 
-  updateVoteUI();
+  fetchVotes();
 
   // ---- Memes ----
   const memes = [
