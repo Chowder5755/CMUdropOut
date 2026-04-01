@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The NATRAT - CMU Dropout Tracker Since Fall 2025.</title>
+<title>The NATRAT - CMU Dropout Tracker Since 1906.</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -228,15 +228,12 @@
   }
 
   // Find current count by summing intervals from epoch
-  // Set EPOCH so that exactly 27 intervals have passed by now
-  function calcEpoch() {
-    var now = Date.now();
-    var t = 0;
-    for (var i = 0; i < 27; i++) t += getIntervalAt(i);
-    // EPOCH = now - (sum of 27 intervals) - small offset so we're mid-interval 27
-    return now - t - Math.floor(getIntervalAt(27) * 0.5);
-  }
-  var EPOCH = calcEpoch();
+  // Fixed epoch: sum of first 27 intervals back from April 1 2026 00:00:00 UTC
+  // This is stable and never recalculates
+  var APRIL1 = 1743465600000; // April 1, 2026 00:00:00 UTC
+  var epochOffset = 0;
+  for (var ei = 0; ei < 27; ei++) epochOffset += getIntervalAt(ei);
+  var EPOCH = APRIL1 - epochOffset;
 
   function getCountAndNext() {
     var now = Date.now();
@@ -264,7 +261,7 @@
     var h = Math.floor(diff / 3600000);
     var m = Math.floor((diff % 3600000) / 60000);
     var sc = Math.floor((diff % 60000) / 1000);
-    document.getElementById('next-tick').textContent = 'Next dropout in: ' + h + 'h ' + m + 'm ' + sc + 's';
+    document.getElementById('next-tick').textContent = '☠️ Next dropout in: ' + h + 'h ' + m + 'm ' + sc + 's';
     document.getElementById('will-it-be-you').textContent = '(will it be you?)';
   }
 
