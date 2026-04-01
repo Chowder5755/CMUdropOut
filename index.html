@@ -5,43 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CMU Dropout Counter</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Impact&family=Comic+Neue:wght@700&display=swap');
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     background: #1a1a2e;
     min-height: 100vh;
     overflow-x: hidden;
-    font-family: 'Comic Neue', cursive;
+    font-family: 'Comic Sans MS', cursive;
     position: relative;
   }
 
-  .stars {
-    position: fixed;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 0;
-  }
-
+  .stars { position: fixed; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
   .star {
-    position: absolute;
-    width: 3px; height: 3px;
-    background: white;
-    border-radius: 50%;
+    position: absolute; width: 3px; height: 3px;
+    background: white; border-radius: 50%;
     animation: twinkle 2s infinite alternate;
   }
+  @keyframes twinkle { from { opacity: 0.2; } to { opacity: 1; } }
 
-  @keyframes twinkle {
-    from { opacity: 0.2; } to { opacity: 1; }
-  }
-
-  .hero {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: 40px 20px 20px;
-  }
+  .hero { position: relative; z-index: 1; text-align: center; padding: 40px 20px 20px; }
 
   .title {
     font-family: Impact, sans-serif;
@@ -52,19 +34,13 @@
     animation: shake 0.5s infinite;
     text-transform: uppercase;
   }
-
   @keyframes shake {
     0%,100% { transform: translateX(0); }
     25% { transform: translateX(-3px) rotate(-1deg); }
     75% { transform: translateX(3px) rotate(1deg); }
   }
 
-  .subtitle {
-    color: #ffd700;
-    font-size: clamp(14px, 2.5vw, 22px);
-    margin-top: 8px;
-    text-shadow: 2px 2px 0 #000;
-  }
+  .subtitle { color: #ffd700; font-size: clamp(14px, 2.5vw, 22px); margin-top: 8px; text-shadow: 2px 2px 0 #000; font-style: italic; }
 
   .counter-box {
     background: linear-gradient(135deg, #ff6b35, #f7c59f, #ff6b35);
@@ -75,21 +51,13 @@
     margin: 30px auto;
     box-shadow: 8px 8px 0 #000, 0 0 40px rgba(255,107,53,0.6);
     animation: pulse-box 1s infinite alternate;
-    position: relative;
   }
-
   @keyframes pulse-box {
     from { box-shadow: 8px 8px 0 #000, 0 0 20px rgba(255,107,53,0.4); }
     to   { box-shadow: 8px 8px 0 #000, 0 0 60px rgba(255,107,53,0.9); }
   }
 
-  .count-label {
-    font-family: Impact, sans-serif;
-    font-size: clamp(14px, 2vw, 20px);
-    color: #1a1a2e;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-  }
+  .count-label { font-family: Impact, sans-serif; font-size: clamp(14px, 2vw, 20px); color: #1a1a2e; letter-spacing: 3px; text-transform: uppercase; }
 
   .count-number {
     font-family: Impact, sans-serif;
@@ -98,116 +66,10 @@
     text-shadow: 5px 5px 0 #000, -2px -2px 0 #c00;
     line-height: 1;
     display: block;
-    animation: countFlash 0.3s ease;
   }
 
-  @keyframes countFlash {
-    0% { transform: scale(1.4); color: #ff0; }
-    100% { transform: scale(1); color: #fff; }
-  }
-
-  .tick-info {
-    color: #1a1a2e;
-    font-size: 13px;
-    margin-top: 8px;
-    font-weight: 700;
-  }
-
-  /* Meme Grid */
-  .meme-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px 30px 60px;
-    position: relative;
-    z-index: 1;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .meme-card {
-    background: white;
-    border: 4px solid #000;
-    border-radius: 10px;
-    width: 220px;
-    padding: 10px;
-    box-shadow: 5px 5px 0 #000;
-    transform: rotate(var(--rot));
-    transition: transform 0.2s;
-    cursor: pointer;
-  }
-  .meme-card:hover { transform: rotate(0) scale(1.07); z-index: 10; }
-
-  .meme-top, .meme-bottom {
-    font-family: Impact, sans-serif;
-    font-size: 15px;
-    color: white;
-    text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
-    text-align: center;
-    text-transform: uppercase;
-    line-height: 1.2;
-  }
-
-  .meme-img-area {
-    width: 100%;
-    height: 160px;
-    border-radius: 6px;
-    margin: 6px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 70px;
-    background: var(--bg);
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Floating emojis */
-  .floater {
-    position: fixed;
-    font-size: 36px;
-    animation: float-up linear infinite;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.85;
-  }
-
-  @keyframes float-up {
-    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0.9; }
-    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-  }
-
-  .ticker {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #ff0000;
-    color: white;
-    font-family: Impact, sans-serif;
-    font-size: 18px;
-    letter-spacing: 2px;
-    padding: 8px 0;
-    white-space: nowrap;
-    overflow: hidden;
-    z-index: 999;
-  }
-
-  .ticker-inner {
-    display: inline-block;
-    animation: ticker-scroll 18s linear infinite;
-  }
-
-  @keyframes ticker-scroll {
-    from { transform: translateX(100vw); }
-    to   { transform: translateX(-100%); }
-  }
-
-  .next-tick {
-    font-size: 12px;
-    color: #555;
-    margin-top: 4px;
-  }
+  .tick-info { color: #1a1a2e; font-size: 13px; margin-top: 8px; font-weight: 700; }
+  .next-tick { font-size: 12px; color: #333; margin-top: 4px; }
 
   .vote-btn {
     margin-top: 18px;
@@ -229,54 +91,82 @@
   }
   .vote-btn:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 #000; }
   .vote-btn:active { transform: translate(3px,3px); box-shadow: 2px 2px 0 #000; }
-  .vote-btn.voted {
-    background: linear-gradient(135deg, #555, #333);
-    animation: none;
-    cursor: default;
-  }
+  .vote-btn.voted { background: linear-gradient(135deg, #555, #333); cursor: default; }
 
-  .vote-count {
-    margin-top: 10px;
-    font-family: Impact, sans-serif;
-    font-size: 16px;
-    color: #1a1a2e;
-    text-shadow: 1px 1px 0 rgba(255,255,255,0.4);
-  }
+  .vote-count { margin-top: 10px; font-family: Impact, sans-serif; font-size: 16px; color: #1a1a2e; }
 
   .vote-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
+    position: fixed; top: 50%; left: 50%;
     transform: translate(-50%, -60%);
-    background: white;
-    border: 5px solid #000;
-    border-radius: 16px;
-    padding: 24px 40px;
+    background: white; border: 5px solid #000;
+    border-radius: 16px; padding: 24px 40px;
     font-family: Impact, sans-serif;
     font-size: clamp(18px, 3vw, 28px);
-    text-align: center;
-    box-shadow: 8px 8px 0 #000;
-    z-index: 9999;
+    text-align: center; box-shadow: 8px 8px 0 #000;
+    z-index: 9999; pointer-events: none;
     animation: popIn 0.3s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
-    pointer-events: none;
   }
-
   @keyframes popIn {
-    0%   { opacity: 0; transform: translate(-50%, -60%) scale(0.5); }
-    70%  { transform: translate(-50%, -60%) scale(1.1); }
-    100% { opacity: 1; transform: translate(-50%, -60%) scale(1); }
+    0%   { opacity: 0; transform: translate(-50%,-60%) scale(0.5); }
+    70%  { transform: translate(-50%,-60%) scale(1.1); }
+    100% { opacity: 1; transform: translate(-50%,-60%) scale(1); }
   }
 
-  /* confetti burst */
+  .meme-grid {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 20px; padding: 20px 30px 60px;
+    position: relative; z-index: 1;
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  .meme-card {
+    background: white; border: 4px solid #000;
+    border-radius: 10px; width: 220px; padding: 10px;
+    box-shadow: 5px 5px 0 #000;
+    transform: rotate(var(--rot));
+    transition: transform 0.2s; cursor: pointer;
+  }
+  .meme-card:hover { transform: rotate(0) scale(1.07); z-index: 10; }
+
+  .meme-top, .meme-bottom {
+    font-family: Impact, sans-serif; font-size: 15px;
+    color: white; text-align: center; text-transform: uppercase; line-height: 1.2;
+    text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+  }
+
+  .meme-img-area {
+    width: 100%; height: 160px; border-radius: 6px; margin: 6px 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 70px; background: var(--bg);
+  }
+
+  .floater {
+    position: fixed; animation: float-up linear infinite;
+    pointer-events: none; z-index: 0; opacity: 0.85;
+  }
+  @keyframes float-up {
+    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0.9; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  .ticker {
+    position: fixed; bottom: 0; width: 100%;
+    background: #ff0000; color: white;
+    font-family: Impact, sans-serif; font-size: 18px;
+    letter-spacing: 2px; padding: 8px 0;
+    white-space: nowrap; overflow: hidden; z-index: 999;
+  }
+  .ticker-inner { display: inline-block; animation: ticker-scroll 18s linear infinite; }
+  @keyframes ticker-scroll {
+    from { transform: translateX(100vw); }
+    to   { transform: translateX(-100%); }
+  }
+
   .confetti {
-    position: fixed;
-    width: 10px; height: 10px;
-    border-radius: 2px;
+    position: fixed; width: 10px; height: 10px; border-radius: 2px;
     animation: confetti-fall 1.5s ease forwards;
-    z-index: 9999;
-    pointer-events: none;
+    z-index: 9999; pointer-events: none;
   }
-
   @keyframes confetti-fall {
     0%   { opacity: 1; transform: translateY(0) rotate(0deg); }
     100% { opacity: 0; transform: translateY(200px) rotate(720deg); }
@@ -296,16 +186,14 @@
     <span class="count-number" id="counter">0</span>
     <div class="tick-info">Est. since the dawn of GPA destruction</div>
     <div class="next-tick" id="next-tick">Next dropout in: calculating...</div>
-
-    <button class="vote-btn" id="voteBtn" onclick="castVote()">☠️ VOTE FOR NEXT DROPOUT ☠️</button>
+    <div class="next-tick" id="will-it-be-you"></div>
+    <button class="vote-btn" id="voteBtn">☠️ VOTE FOR NEXT DROPOUT ☠️</button>
     <div class="vote-count">🗳️ <span id="voteCount">0</span> students nominated for departure</div>
   </div>
 </div>
 
-<!-- Meme Cards -->
-<div class="meme-grid" id="memeGrid"></div>
 
-<!-- Floating ticker -->
+
 <div class="ticker">
   <span class="ticker-inner">
     💀 DROPOUT DETECTED &nbsp;|&nbsp; GPA = NULL &nbsp;|&nbsp; mom.exe has stopped working &nbsp;|&nbsp;
@@ -317,42 +205,67 @@
 
 <script>
   // ---- Stars ----
-  const starsEl = document.getElementById('stars');
-  for (let i = 0; i < 120; i++) {
-    const s = document.createElement('div');
+  var starsEl = document.getElementById('stars');
+  for (var i = 0; i < 120; i++) {
+    var s = document.createElement('div');
     s.className = 'star';
-    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*3}s;animation-duration:${1+Math.random()*3}s`;
+    s.style.cssText = 'left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;animation-delay:'+Math.random()*3+'s;animation-duration:'+(1+Math.random()*3)+'s';
     starsEl.appendChild(s);
   }
 
-  // ---- Counter Logic ----
-  // Start count from a fixed epoch and tick every 8 hours
-  const EPOCH = new Date('2020-01-01T00:00:00Z').getTime();
-  const INTERVAL_MS = 8 * 60 * 60 * 1000; // 8 hours
+  // ---- Counter ----
+  var MIN_MS = 2 * 24 * 60 * 60 * 1000;   // 2 days (min late-spring gap)
+  var MAX_MS = 4 * 7 * 24 * 60 * 60 * 1000; // 4 weeks (max late-spring gap)
 
-  function getCount() {
-    return Math.floor((Date.now() - EPOCH) / INTERVAL_MS);
+  // Seeded random so everyone sees the same schedule
+  function seededRand(seed) {
+    var x = Math.sin(seed + 1) * 10000;
+    return x - Math.floor(x);
+  }
+
+  function getIntervalAt(index) {
+    return Math.floor(seededRand(index) * (MAX_MS - MIN_MS) + MIN_MS);
+  }
+
+  // Find current count by summing intervals from epoch
+  // Set EPOCH so that exactly 27 intervals have passed by now
+  function calcEpoch() {
+    var now = Date.now();
+    var t = 0;
+    for (var i = 0; i < 27; i++) t += getIntervalAt(i);
+    // EPOCH = now - (sum of 27 intervals) - small offset so we're mid-interval 27
+    return now - t - Math.floor(getIntervalAt(27) * 0.5);
+  }
+  var EPOCH = calcEpoch();
+
+  function getCountAndNext() {
+    var now = Date.now();
+    var t = EPOCH;
+    var count = 0;
+    while (true) {
+      var interval = getIntervalAt(count);
+      if (t + interval > now) {
+        return { count: count, nextTick: t + interval };
+      }
+      t += interval;
+      count++;
+    }
   }
 
   function updateCounter() {
-    const el = document.getElementById('counter');
-    const newVal = getCount();
-    const old = parseInt(el.textContent) || 0;
-    if (newVal !== old) {
-      el.textContent = newVal.toLocaleString();
-      el.style.animation = 'none';
-      void el.offsetWidth;
-      el.style.animation = 'countFlash 0.3s ease';
+    var el = document.getElementById('counter');
+    var result = getCountAndNext();
+    var old = parseInt(el.textContent.replace(/,/g, '')) || 0;
+    if (result.count !== old) {
+      el.textContent = result.count.toLocaleString();
       spawnConfetti();
     }
-    // Next tick countdown
-    const nextTick = EPOCH + (newVal + 1) * INTERVAL_MS;
-    const diff = nextTick - Date.now();
-    const h = Math.floor(diff / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-    document.getElementById('next-tick').textContent =
-      `☠️ Next dropout in: ${h}h ${m}m ${s}s`;
+    var diff = result.nextTick - Date.now();
+    var h = Math.floor(diff / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var sc = Math.floor((diff % 60000) / 1000);
+    document.getElementById('next-tick').textContent = '☠️ Next dropout in: ' + h + 'h ' + m + 'm ' + sc + 's';
+    document.getElementById('will-it-be-you').textContent = '(will it be you?)';
   }
 
   updateCounter();
@@ -360,82 +273,98 @@
 
   // ---- Confetti ----
   function spawnConfetti() {
-    const colors = ['#ff0','#f00','#0f0','#0ff','#f0f','#ff6b35'];
-    for (let i = 0; i < 30; i++) {
-      const c = document.createElement('div');
+    var colors = ['#ff0','#f00','#0f0','#0ff','#f0f','#ff6b35'];
+    for (var i = 0; i < 30; i++) {
+      var c = document.createElement('div');
       c.className = 'confetti';
-      c.style.cssText = `left:${30+Math.random()*40}%;top:40%;background:${colors[Math.floor(Math.random()*colors.length)]};transform:rotate(${Math.random()*360}deg);animation-delay:${Math.random()*0.5}s`;
+      c.style.cssText = 'left:'+(30+Math.random()*40)+'%;top:40%;background:'+colors[Math.floor(Math.random()*colors.length)]+';transform:rotate('+Math.random()*360+'deg);animation-delay:'+Math.random()*0.5+'s';
       document.body.appendChild(c);
-      setTimeout(() => c.remove(), 2000);
+      setTimeout(function(el){ el.remove(); }, 2000, c);
     }
   }
 
-  // ---- Vote Button (JSONBin) ----
-  const BIN_ID = '69cc1c47aaba882197b0b9f0';
-  const API_KEY = '$2a$10$wEQXXYdLol9Gjnpr1V2STeE8GbluGFpvkpNgF1wuAlY0mJjU2dk56';
-  const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
-  const HEADERS = { 'X-Master-Key': API_KEY, 'Content-Type': 'application/json' };
+  // ---- JSONBin Vote ----
+  var BIN_ID = '69cc1c47aaba882197b0b9f0';
+  var API_KEY = '$2a$10$wEQXXYdLol9Gjnpr1V2STeE8GbluGFpvkpNgF1wuAlY0mJjU2dk56';
+  var BIN_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
 
-  let votes = 0;
-  let hasVoted = localStorage.getItem('cmu_has_voted') === 'true';
+  var votes = 0;
+  var hasVoted = localStorage.getItem('cmu_has_voted') === 'true';
 
-  async function fetchVotes() {
-    try {
-      const res = await fetch(BIN_URL + '/latest', { headers: HEADERS });
-      const data = await res.json();
-      votes = data.record.votes || 0;
+  function fetchVotes() {
+    fetch(BIN_URL + '/latest', {
+      method: 'GET',
+      headers: { 'X-Master-Key': API_KEY, 'X-Bin-Meta': 'false' }
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      votes = data.votes || 0;
       updateVoteUI();
-    } catch(e) { console.error('Failed to fetch votes', e); }
+    })
+    .catch(function(e) { console.error('fetch votes failed', e); });
   }
 
-  async function saveVotes(newCount) {
-    await fetch(BIN_URL, {
+  function saveVotes(newCount) {
+    fetch(BIN_URL, {
       method: 'PUT',
-      headers: HEADERS,
+      headers: { 'X-Master-Key': API_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({ votes: newCount })
-    });
+    }).catch(function(e) { console.error('save votes failed', e); });
   }
 
   function updateVoteUI() {
     document.getElementById('voteCount').textContent = votes.toLocaleString();
-    const btn = document.getElementById('voteBtn');
+    var btn = document.getElementById('voteBtn');
     if (hasVoted) {
-      btn.textContent = '✅ YOU VOTED — TRAITOR';
+      var taunts = [
+        '✅ SEE YOU IN YOUR GAP YEAR',
+        '✅ YOUR PARENTS ARE SO DISAPPOINTED',
+        '✅ YOU TRAITOR',
+        '✅ SCOTTY WILL MISS YOU',
+        '✅ ENJOY YOUR COMMUNITY COLLEGE',
+        '✅ THE CURVE COULDN\'T SAVE YOU',
+        '✅ GPA.EXE HAS STOPPED WORKING'
+      ];
+      var idx = parseInt(localStorage.getItem('cmu_taunt_idx') || '0');
+      btn.textContent = taunts[idx % taunts.length];
       btn.classList.add('voted');
       btn.disabled = true;
     }
   }
 
-  const voteMessages = [
+  var voteMessages = [
     '🗳️ VOTE CAST! Someone\'s getting yeeted!',
     '☠️ ANOTHER SOUL NOMINATED!',
     '📉 GPA couldn\'t save them!',
     '🚪 One step closer to the door!',
     '💀 Democracy has spoken!',
     '🤡 The people have voted!',
-    '😔 Thoughts and prayers...',
+    '😔 Thoughts and prayers...'
   ];
 
-  async function castVote() {
+  function castVote() {
     if (hasVoted) return;
     votes++;
     hasVoted = true;
+    var idx = parseInt(localStorage.getItem('cmu_taunt_idx') || '0');
+    localStorage.setItem('cmu_taunt_idx', idx + 1);
     localStorage.setItem('cmu_has_voted', 'true');
     updateVoteUI();
     spawnConfetti();
-    await saveVotes(votes);
-
-    const popup = document.createElement('div');
+    saveVotes(votes);
+    var popup = document.createElement('div');
     popup.className = 'vote-popup';
     popup.textContent = voteMessages[Math.floor(Math.random() * voteMessages.length)];
     document.body.appendChild(popup);
-    setTimeout(() => popup.remove(), 2000);
+    setTimeout(function() { popup.remove(); }, 2000);
   }
+
+  document.getElementById('voteBtn').addEventListener('click', castVote);
 
   fetchVotes();
 
   // ---- Memes ----
-  const memes = [
+  var memes = [
     { top: "me before CMU", emoji: "😎", bg: "#a8e6cf", bottom: "me after week 1" },
     { top: "my GPA", emoji: "📉", bg: "#ffd3b6", bottom: "also my will to live" },
     { top: "professor:", emoji: "🧠", bg: "#d4a5f5", bottom: '"this is trivial"' },
@@ -443,42 +372,44 @@
     { top: "me at 3am", emoji: "🤡", bg: "#a0c4ff", bottom: "debugging a semicolon" },
     { top: "drop/add deadline", emoji: "🚪", bg: "#fdffb6", bottom: "my only friend" },
     { top: "curve moment", emoji: "🙏", bg: "#caffbf", bottom: '"class avg was 34%"' },
-    { top: "parents:", emoji: "💸", bg: "#ffc6ff", bottom: '"so how's school?"' },
+    { top: "parents:", emoji: "💸", bg: "#ffc6ff", bottom: '"so how\'s school?"' },
     { top: "me explaining", emoji: "🗿", bg: "#fffffc", bottom: "my 5th major switch" },
     { top: "15-213", emoji: "☠️", bg: "#ffb3c1", bottom: "has entered the chat" },
     { top: "the curve", emoji: "📊", bg: "#b5ead7", bottom: "did NOT save me" },
-    { top: '"just study harder"', emoji: "😤", bg: "#c7b8ea", bottom: "bro i haven't slept" },
+    { top: '"just study harder"', emoji: "😤", bg: "#c7b8ea", bottom: "bro i haven't slept" }
   ];
 
-  const rots = [-4, 3, -2, 5, -3, 2, -5, 4, -1, 3, -4, 2];
-  const grid = document.getElementById('memeGrid');
+  var rots = [-4, 3, -2, 5, -3, 2, -5, 4, -1, 3, -4, 2];
+  var grid = document.getElementById('memeGrid');
 
-  memes.forEach((m, i) => {
-    const card = document.createElement('div');
+  memes.forEach(function(m, i) {
+    var card = document.createElement('div');
     card.className = 'meme-card';
     card.style.setProperty('--rot', rots[i % rots.length] + 'deg');
-    card.innerHTML = `
-      <div class="meme-top">${m.top}</div>
-      <div class="meme-img-area" style="--bg:${m.bg}">${m.emoji}</div>
-      <div class="meme-bottom">${m.bottom}</div>
-    `;
+    card.innerHTML =
+      '<div class="meme-top">' + m.top + '</div>' +
+      '<div class="meme-img-area" style="--bg:' + m.bg + '">' + m.emoji + '</div>' +
+      '<div class="meme-bottom">' + m.bottom + '</div>';
     grid.appendChild(card);
   });
 
   // ---- Floating Emojis ----
-  const floatEmojis = ['😭','💀','📉','🚪','🏃','😱','🤡','🗿','😔','☠️','📚','😤'];
+  var floatEmojis = ['😭','💀','📉','🚪','🏃','😱','🤡','🗿','😔','☠️','📚','😤'];
+
   function spawnFloater() {
-    const f = document.createElement('div');
+    var f = document.createElement('div');
     f.className = 'floater';
     f.textContent = floatEmojis[Math.floor(Math.random() * floatEmojis.length)];
-    const dur = 6 + Math.random() * 8;
-    f.style.cssText = `left:${Math.random()*100}%;animation-duration:${dur}s;animation-delay:0s;font-size:${24+Math.random()*28}px`;
+    var dur = 6 + Math.random() * 8;
+    f.style.cssText = 'left:'+Math.random()*100+'%;animation-duration:'+dur+'s;font-size:'+(24+Math.random()*28)+'px';
     document.body.appendChild(f);
-    setTimeout(() => f.remove(), dur * 1000);
+    setTimeout(function() { f.remove(); }, dur * 1000);
   }
 
   setInterval(spawnFloater, 800);
-  for (let i = 0; i < 8; i++) setTimeout(spawnFloater, i * 300);
+  for (var j = 0; j < 8; j++) {
+    setTimeout(spawnFloater, j * 300);
+  }
 </script>
 </body>
 </html>
