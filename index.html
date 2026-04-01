@@ -69,7 +69,7 @@
   }
 
   .tick-info { color: #1a1a2e; font-size: 13px; margin-top: 8px; font-weight: 700; }
-  .next-tick { font-size: 12px; color: #333; margin-top: 4px; }
+  .next-tick { font-size: clamp(16px, 2.5vw, 24px); color: #1a1a2e; margin-top: 8px; font-family: Impact, sans-serif; letter-spacing: 1px; text-shadow: 1px 1px 0 rgba(255,255,255,0.4); }
 
   .vote-btn {
     margin-top: 18px;
@@ -184,7 +184,7 @@
   <div class="counter-box">
     <div class="count-label">📉 Current CMU Student Drop Out Count 📉</div>
     <span class="count-number" id="counter">0</span>
-    <div class="tick-info">Est. since the dawn of GPA destruction</div>
+
     <div class="next-tick" id="next-tick">Next dropout in: calculating...</div>
     <div class="next-tick" id="will-it-be-you"></div>
     <button class="vote-btn" id="voteBtn">☠️ VOTE FOR NEXT DROPOUT ☠️</button>
@@ -264,7 +264,7 @@
     var h = Math.floor(diff / 3600000);
     var m = Math.floor((diff % 3600000) / 60000);
     var sc = Math.floor((diff % 60000) / 1000);
-    document.getElementById('next-tick').textContent = '☠️ Next dropout in: ' + h + 'h ' + m + 'm ' + sc + 's';
+    document.getElementById('next-tick').textContent = 'Next dropout in: ' + h + 'h ' + m + 'm ' + sc + 's';
     document.getElementById('will-it-be-you').textContent = '(will it be you?)';
   }
 
