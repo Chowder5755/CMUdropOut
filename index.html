@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The NATRAT - CMU Dropout Tracker Since August 2025.</title>
+<title>The NATRAT - CMU Dropout Tracker Since 1906.</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -112,33 +112,6 @@
     100% { opacity: 1; transform: translate(-50%,-60%) scale(1); }
   }
 
-  .meme-grid {
-    display: flex; flex-wrap: wrap; justify-content: center;
-    gap: 20px; padding: 20px 30px 60px;
-    position: relative; z-index: 1;
-    max-width: 1200px; margin: 0 auto;
-  }
-
-  .meme-card {
-    background: white; border: 4px solid #000;
-    border-radius: 10px; width: 220px; padding: 10px;
-    box-shadow: 5px 5px 0 #000;
-    transform: rotate(var(--rot));
-    transition: transform 0.2s; cursor: pointer;
-  }
-  .meme-card:hover { transform: rotate(0) scale(1.07); z-index: 10; }
-
-  .meme-top, .meme-bottom {
-    font-family: Impact, sans-serif; font-size: 15px;
-    color: white; text-align: center; text-transform: uppercase; line-height: 1.2;
-    text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
-  }
-
-  .meme-img-area {
-    width: 100%; height: 160px; border-radius: 6px; margin: 6px 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 70px; background: var(--bg);
-  }
 
   .floater {
     position: fixed; animation: float-up linear infinite;
@@ -281,21 +254,27 @@
   }
 
   // ---- JSONBin Vote ----
-  var BIN_ID = '69cc1c47aaba882197b0b9f0';
-  var API_KEY = '$2a$10$wEQXXYdLol9Gjnpr1V2STeE8GbluGFpvkpNgF1wuAlY0mJjU2dk56';
-  var BIN_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+  var WORKER_URL = 'https://broad-boat-c19e.enhance238787.workers.dev';
 
   var votes = 0;
   var hasVoted = localStorage.getItem('cmu_has_voted') === 'true';
 
   function fetchVotes() {
-    fetch(BIN_URL + '/latest', {
-      method: 'GET',
-      headers: { 'X-Master-Key': API_KEY, 'X-Bin-Meta': 'false' }
+    fetch(WORKER_URL, { method: 'GET' })
+    .then(function(res) {
+      console.log('fetch status:', res.status);
+      return res.json();
     })
-    .then(function(res) { return res.json(); })
     .then(function(data) {
-      votes = data.votes || 0;
+      console.log('fetch data:', JSON.stringify(data));
+      // JSONBin sometimes wraps in record, sometimes not
+      if (data && typeof data.votes === 'number') {
+        votes = data.votes;
+      } else if (data && data.record && typeof data.record.votes === 'number') {
+        votes = data.record.votes;
+      } else {
+        votes = 0;
+      }
       updateVoteUI();
     })
     .catch(function(e) { console.error('fetch votes failed', e); });
@@ -304,9 +283,15 @@
   function saveVotes(newCount) {
     fetch(BIN_URL, {
       method: 'PUT',
-      headers: { 'X-Master-Key': API_KEY, 'Content-Type': 'application/json' },
+      headers: { 'X-Access-Key': API_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({ votes: newCount })
-    }).catch(function(e) { console.error('save votes failed', e); });
+    })
+    .then(function(res) {
+      console.log('save status:', res.status);
+      return res.json();
+    })
+    .then(function(data) { console.log('save response:', JSON.stringify(data)); })
+    .catch(function(e) { console.error('save votes failed', e); });
   }
 
   function updateVoteUI() {
@@ -314,10 +299,11 @@
     var btn = document.getElementById('voteBtn');
     if (hasVoted) {
       var taunts = [
-        '✅ ENJOY YOUR COMMUNITY COLLEGE',
+        '✅ SEE YOU IN YOUR GAP YEAR',
         '✅ YOUR PARENTS ARE SO DISAPPOINTED',
         '✅ YOU TRAITOR',
         '✅ SCOTTY WILL MISS YOU',
+        '✅ ENJOY YOUR COMMUNITY COLLEGE',
         '✅ THE CURVE COULDN\'T SAVE YOU',
         '✅ GPA.EXE HAS STOPPED WORKING'
       ];
@@ -359,35 +345,7 @@
 
   fetchVotes();
 
-  // ---- Memes ----
-  var memes = [
-    { top: "me before CMU", emoji: "😎", bg: "#a8e6cf", bottom: "me after week 1" },
-    { top: "my GPA", emoji: "📉", bg: "#ffd3b6", bottom: "also my will to live" },
-    { top: "professor:", emoji: "🧠", bg: "#d4a5f5", bottom: '"this is trivial"' },
-    { top: "sleep schedule", emoji: "💀", bg: "#ffaaa5", bottom: "what is that?" },
-    { top: "me at 3am", emoji: "🤡", bg: "#a0c4ff", bottom: "debugging a semicolon" },
-    { top: "drop/add deadline", emoji: "🚪", bg: "#fdffb6", bottom: "my only friend" },
-    { top: "curve moment", emoji: "🙏", bg: "#caffbf", bottom: '"class avg was 34%"' },
-    { top: "parents:", emoji: "💸", bg: "#ffc6ff", bottom: '"so how\'s school?"' },
-    { top: "me explaining", emoji: "🗿", bg: "#fffffc", bottom: "my 5th major switch" },
-    { top: "15-213", emoji: "☠️", bg: "#ffb3c1", bottom: "has entered the chat" },
-    { top: "the curve", emoji: "📊", bg: "#b5ead7", bottom: "did NOT save me" },
-    { top: '"just study harder"', emoji: "😤", bg: "#c7b8ea", bottom: "bro i haven't slept" }
-  ];
 
-  var rots = [-4, 3, -2, 5, -3, 2, -5, 4, -1, 3, -4, 2];
-  var grid = document.getElementById('memeGrid');
-
-  memes.forEach(function(m, i) {
-    var card = document.createElement('div');
-    card.className = 'meme-card';
-    card.style.setProperty('--rot', rots[i % rots.length] + 'deg');
-    card.innerHTML =
-      '<div class="meme-top">' + m.top + '</div>' +
-      '<div class="meme-img-area" style="--bg:' + m.bg + '">' + m.emoji + '</div>' +
-      '<div class="meme-bottom">' + m.bottom + '</div>';
-    grid.appendChild(card);
-  });
 
   // ---- Floating Emojis ----
   var floatEmojis = ['😭','💀','📉','🚪','🏃','😱','🤡','🗿','😔','☠️','📚','😤'];
