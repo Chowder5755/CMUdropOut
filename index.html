@@ -294,19 +294,20 @@
     .catch(function(e) { console.error('save votes failed', e); });
   }
 
+  var taunts = [
+    '✅ SEE YOU IN YOUR GAP YEAR',
+    '✅ YOUR PARENTS ARE SO DISAPPOINTED',
+    '✅ YOU TRAITOR',
+    '✅ SCOTTY WILL MISS YOU',
+    '✅ ENJOY YOUR COMMUNITY COLLEGE',
+    '✅ THE CURVE COULDN\'T SAVE YOU',
+    '✅ GPA.EXE HAS STOPPED WORKING'
+  ];
+
   function updateVoteUI() {
     document.getElementById('voteCount').textContent = votes.toLocaleString();
     var btn = document.getElementById('voteBtn');
     if (hasVoted) {
-      var taunts = [
-        '✅ SEE YOU IN YOUR GAP YEAR',
-        '✅ YOUR PARENTS ARE SO DISAPPOINTED',
-        '✅ YOU TRAITOR',
-        '✅ SCOTTY WILL MISS YOU',
-        '✅ ENJOY YOUR COMMUNITY COLLEGE',
-        '✅ THE CURVE COULDN\'T SAVE YOU',
-        '✅ GPA.EXE HAS STOPPED WORKING'
-      ];
       var idx = parseInt(localStorage.getItem('cmu_taunt_idx') || '0');
       btn.textContent = taunts[idx % taunts.length];
       btn.classList.add('voted');
